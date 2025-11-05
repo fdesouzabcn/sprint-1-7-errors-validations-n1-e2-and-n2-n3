@@ -4,13 +4,11 @@ declare(strict_types=1);
 session_start();
 error_reporting(E_ALL);
 
-
 // Only process POST requests
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     echo "⛔ No data submitted. Please return to the <a href='index.php'>form</a>.";
     exit;
 }
-
 
 // Sanitize and Collect Data
 $name = htmlspecialchars($_POST['fname'] ?? '');
@@ -28,15 +26,10 @@ $validation_success = false;
 $error_message = '';
 
 try {
-    // Check for non-empty string data
     isValidEntryData($entryData);
-    // Check for valid Name format
     isValidName($name);
-    // Check for valid Last Name format
     isValidLastName($lastName);
-    // Check for valid Email format
     isValidEmail($email);
-    // If all validations pass, set success flag
     $validation_success = true;
     
 } catch (Exception $e) {
@@ -71,7 +64,6 @@ $_SESSION['handler_directory'] = __DIR__;
 echo "✅ <strong>Validation Successful!</strong> The submitted data is valid.<br><br>";
 
 // --- Validation Functions ---
-
 function isValidEntryData(array $data): bool 
 {
     foreach ($data as $key => $value) {
@@ -82,21 +74,18 @@ function isValidEntryData(array $data): bool
     }
     return true;
 }
-
 function isValidName(string $name): void 
 {
     if (!preg_match("/^[a-zA-Z ]+$/", $name)) {
        throw new \Exception("<strong>Invalid Name:</strong> Name fields can only contain letters and spaces.");
     }
 }
-
 function isValidLastName(string $lastName): void 
 {
     if (!preg_match("/^[a-zA-Z ]+$/", $lastName)) {
        throw new \Exception("<strong>Invalid Last Name:</strong> Name fields can only contain letters and spaces.");
     }
 }
-
 function isValidEmail(string $email): void
 {
     if ( !filter_var($email, FILTER_VALIDATE_EMAIL)) {
